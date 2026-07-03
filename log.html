@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그 열람 · TRPG 로그 아카이브</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="log-body">
+  <header id="logHeader" class="log-header-bar"></header>
+
+  <div class="log-layout">
+    <aside id="logSidebar" class="log-sidebar">
+      <!-- 사이드바는 JS로 동적 생성됩니다 -->
+    </aside>
+
+    <section class="log-main">
+      <div id="logFrameWrap" class="log-frame-wrap">
+        <p class="loading">로그를 불러오는 중...</p>
+      </div>
+      <button id="scrollTop" class="scroll-fab scroll-up" aria-label="맨 위로" title="로그 맨 위로">↑</button>
+      <button id="scrollBottom" class="scroll-fab scroll-down" aria-label="맨 아래로" title="로그 맨 아래로">↓</button>
+    </section>
+  </div>
+
+  <footer class="site-footer log-footer">
+    <div class="container">
+      <p>© TRPG 로그 아카이브 · GitHub Pages로 호스팅됨</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/log-viewer.js"></script>
+</body>
+</html>

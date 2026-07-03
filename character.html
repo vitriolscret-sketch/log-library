@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>등장인물 상세 · TRPG 로그 아카이브</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="site-title"><a href="index.html">🎲 TRPG 로그 아카이브</a></h1>
+      <nav class="site-nav">
+        <a href="index.html">캠페인 서가</a>
+        <a href="characters.html" class="active">등장인물</a>
+        <button id="themeToggle" class="theme-toggle" aria-label="테마 전환" title="다크/라이트 전환">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <a href="characters.html" class="back-link">← 등장인물 목록으로</a>
+    <section id="characterDetail" class="character-detail">
+      <p class="loading">등장인물 정보를 불러오는 중...</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© TRPG 로그 아카이브 · GitHub Pages로 호스팅됨</p>
+    </div>
+  </footer>
+
+  <button id="scrollTop" class="scroll-top" aria-label="맨 위로" title="맨 위로">↑</button>
+
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/characters.js"></script>
+  <script src="assets/js/character-detail.js"></script>
+</body>
+</html>
