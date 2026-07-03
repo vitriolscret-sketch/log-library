@@ -385,6 +385,33 @@ html {
   }
 }
 
+/* ===== 캐릭터 섹션 헤더 (PC / NPC 분류) ===== */
+.char-section-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.char-section-heading:first-child {
+  margin-top: 0;
+}
+
+.char-section-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+}
+
 /* ===== 캐릭터 그리드 ===== */
 .character-grid {
   display: grid;
