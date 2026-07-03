@@ -25,13 +25,17 @@
   // 문서 제목 업데이트
   document.title = `${c.name} · TRPG 로그 아카이브`;
 
-  // 아바타 이니셜 + 색상
+  // 아바타: portrait이 있으면 이미지, 없으면 이니셜
   const initial = c.name.charAt(0);
   const hue = [...c.name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % 360;
   const avatarColor = `hsl(${hue}, 55%, 45%)`;
+  const avatarInner = c.portrait
+    ? `${escapeHtml(initial)}<img class="char-detail-avatar-img" src="${escapeHtml(c.portrait)}" alt="${escapeHtml(c.name)}" onerror="this.style.display='none'">`
+    : escapeHtml(initial);
 
   // 관련 세션 링크 생성
   // relatedSessions 항목은 [campaignId, num] 튜플 또는 번호만 지원
+  // 각 세션에 캠페인 색상 태그 + summary 한 줄 미리보기 포함
   const relatedHtml = (c.relatedSessions && c.relatedSessions.length > 0)
     ? `<div class="char-detail-section">
          <h3>관련 세션</h3>
@@ -42,15 +46,27 @@
                [campaignId, num] = item;
              } else {
                // 번호만 있는 경우, 캐릭터와 연결된 첫 캠페인 찾기
-               const s = SESSIONS.find(x => x.num === Number(item));
-               if (!s) return `<span class="related-session">Session ${item}</span>`;
-               campaignId = s.campaign;
+               const s0 = SESSIONS.find(x => x.num === Number(item));
+               if (!s0) return `<span class="related-session">Session ${item}</span>`;
+               campaignId = s0.campaign;
                num = item;
              }
              const s = findSession(campaignId, num);
              const camp = CAMPAIGNS[campaignId];
              if (s) {
-               return `<a class="related-session" href="log.html?c=${encodeURIComponent(campaignId)}&s=${num}">Session ${num} · ${escapeHtml(s.title)}${camp ? ' (' + escapeHtml(camp.name) + ')' : ''}</a>`;
+               const tagColor = camp ? camp.color : "var(--accent)";
+               const campName = camp ? escapeHtml(camp.name) : "";
+               return `<a class="related-session-card" href="log.html?c=${encodeURIComponent(campaignId)}&s=${num}" style="--tag-color:${tagColor}">
+                 <div class="related-session-head">
+                   <span class="related-session-num">Session ${num}</span>
+                   ${campName ? `<span class="related-session-tag">${campName}</span>` : ""}
+                 </div>
+                 <div class="related-session-title">${escapeHtml(s.title)}</div>
+                 <div class="related-session-meta">
+                   <span class="related-session-date">📅 ${s.date}</span>
+                 </div>
+                 <div class="related-session-summary">${escapeHtml(s.summary || "")}</div>
+               </a>`;
              }
              return `<span class="related-session">Session ${num}</span>`;
            }).join("")}
@@ -58,14 +74,24 @@
        </div>`
     : "";
 
+  // standing 이미지가 있으면 우측에 큰 이미지 표시, 없으면 아바타 원형 사용
+  const standingHtml = c.standing
+    ? `<div class="char-detail-standing"><img src="${escapeHtml(c.standing)}" alt="${escapeHtml(c.name)} standing" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
+    : "";
+
+  const avatarBlockHtml = c.standing
+    ? ""  // standing이 있으면 아바타 생략 (standing이 역할 대체)
+    : `<div class="char-detail-avatar" style="--avatar-color:${avatarColor}">${avatarInner}</div>`;
+
   detailEl.innerHTML = `
     <article class="character-detail-card">
-      <header class="char-detail-header">
-        <div class="char-detail-avatar" style="--avatar-color:${avatarColor}">${escapeHtml(initial)}</div>
-        <div>
+      <header class="char-detail-header${c.standing ? " has-standing" : ""}">
+        ${avatarBlockHtml}
+        <div class="char-detail-header-info">
           <h2 class="char-detail-name">${escapeHtml(c.name)}</h2>
           <span class="char-detail-role">${escapeHtml(c.role)}</span>
         </div>
+        ${standingHtml}
       </header>
 
       <div class="char-detail-section">

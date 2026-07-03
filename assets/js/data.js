@@ -40,6 +40,8 @@ const CAMPAIGNS = {
 // - date: 진행 날짜
 // - summary: 한 줄 요약 (검색에 사용됨)
 // - campaign: CAMPAIGNS의 id
+// - summaryFile: 세션 요약 HTML 파일명 (선택, logs/ 폴더 기준)
+//   생략 시 "로그파일명_summary.html"로 자동 파생하여 존재하면 표시
 const SESSIONS = [
   {
     file: "session01.html",
@@ -96,6 +98,8 @@ const SESSIONS = [
 // - id: 고유 식별자 (영문 소문자, URL에 사용)
 // - name: 이름
 // - role: 역할 (PC / NPC / 빌런 등)
+// - portrait: 반신/전신 이미지 경로 (선택, characters/ 폴더 기준) — 아바타용 작은 이미지
+// - standing: 반신/전신 이미지 경로 (선택, characters/ 폴더 기준) — 상세 페이지용 큰 이미지
 // - background: 배경 이야기
 // - current: 현재 상황 / 최근 동향
 // - description: 상세 페이지용 긴 설명 (선택)
@@ -105,6 +109,8 @@ const CHARACTERS = [
     id: "arin",
     name: "아린",
     role: "PC · 전사",
+    portrait: "characters/arin.svg",
+    standing: "characters/arin_standing.svg",
     background: "소도시 출신의 검사. 가족을 잃은 후 모험자 길드에 가입했다.",
     current: "현재 숲의 비밀을 조사 중. 동료들과 신뢰를 쌓고 있다.",
     description: "아린은 북부 소도시 출신의 젊은 검사로, 어린 시절 도적 습격으로 가족을 잃었다. 이후 모험자 길드에 가입하여 검술을 갈고닦았다. 감정을 잘 드러내지 않지만, 동료에 대한 의리는 매우 강한 편이다. 현재 미라와 함께 동쪽 숲의 실종 사건을 조사하고 있으며, 점차 리더 역할을 맡고 있다.",
@@ -114,10 +120,23 @@ const CHARACTERS = [
     id: "mira",
     name: "미라",
     role: "PC · 마법사",
+    portrait: "characters/mira.svg",
+    standing: "characters/mira_standing.svg",
     background: "왕립 아카데미 출신. 고대 마법 유적을 연구하는 학자이다.",
     current: "숲에서 발견된 룬 문자를 해독하고 있다.",
     description: "미라는 왕립 마법 아카데미를 최우수로 졸업한 천재 마법사. 고대 문명의 마법 유적을 연구하는 것이 주 관심사이며, 학자적 호기심이 매우 강하다. 아카데미 시절부터 현장 답사를 중시해 왔고, 실전 경험도 꽤 쌓았다. 동쪽 숲에서 발견된 룬 문자가 자신의 연구 주제와 연관이 있다고 판단하여 아린과 함께 의뢰에 참여했다.",
     relatedSessions: [["main", 1], ["main", 2]]
+  },
+  {
+    id: "eliza",
+    name: "일라이자",
+    role: "NPC · 여관 주인",
+    portrait: "characters/eliza_portrait.png",
+    standing: "characters/eliza_standing.png",
+    background: "동쪽 숲 입구 마을 '붉은 달' 여관의 주인. 남편을 잃은 뒤 홀로 여관을 운영하고 있다.",
+    current: " 실종자 조사 의뢰를 아린과 미라에게 맡기며, 마을의 소식통 역할을 하고 있다.",
+    description: "일라이자는 동쪽 숲 인근의 작은 마을에서 '붉은 달' 여관을 운영하는 중년의 여성이다. 젊은 시절 남편을 실종자 사건으로 잃은 뒤 홀로 여관을 이끌어 왔다. 외상 잘 드러내지 않지만 손님을 챙기는 정은 깊고, 마을의 소식이 모이는 여관 특성상 지역 소식통 노릇을 한다. 최근 숲에서 실종자가 속출하자 옛 상처가 되살아나, 모험자 길드에 의뢰를 넣고 아린과 미라를 맞이한다.",
+    relatedSessions: [["main", 1]]
   }
   // 새 인물은 여기에 추가
 ];

@@ -124,6 +124,80 @@
 
   frameWrap.innerHTML = `<iframe src="logs/${session.file}" title="${escapeHtml(session.title)}" loading="lazy"></iframe>`;
 
+  // ===== 세션 요약 패널 =====
+  // summaryFile이 명시되어 있으면 그 파일, 없으면 "로그파일명_summary.html" 자동 파생.
+  // 패널은 기본 표시하고, 토글 열 때 iframe을 로드.
+  // 로드 실패(파일 없음) 시 자동으로 패널을 숨김.
+  const summaryPanel = document.getElementById("logSummaryPanel");
+  const summaryToggle = document.getElementById("summaryToggle");
+  const summaryContent = document.getElementById("summaryContent");
+  const summaryToggleLabel = summaryToggle.querySelector(".summary-toggle-label");
+  const summaryToggleIcon = summaryToggle.querySelector(".summary-toggle-icon");
+
+  // 요약 파일명 결정
+  const baseName = session.file.replace(/\.html?$/, "");
+  const summaryFile = session.summaryFile || `${baseName}_summary.html`;
+
+  // 요약 파일 존재 여부 사전 확인 (http(s) 환경에서만 동작).
+  // file:// 등에서는 fetch가 막히므로 패널을 항상 표시하고 토글 시 로드로 판단.
+  if (location.protocol.startsWith("http")) {
+    fetch(`logs/${summaryFile}`, { method: "HEAD" })
+      .then(res => {
+        if (!res.ok) {
+          summaryPanel.style.display = "none";
+        } else {
+          summaryPanel.hidden = false;
+        }
+      })
+      .catch(() => { summaryPanel.style.display = "none"; });
+  } else {
+    // file:// — 패널 표시, 실제 파일 존재 여부는 토글 시 로드로 확인
+    summaryPanel.hidden = false;
+  }
+
+  // 토글 버튼 클릭 시 요약 내용을 iframe으로 로드/숨김 (부드러운 애니메이션)
+  let summaryLoaded = false;
+  let summaryOpen = false;
+  summaryToggle.addEventListener("click", () => {
+    summaryOpen = !summaryOpen;
+    if (summaryOpen) {
+      // 열기 — 처음 열 때만 iframe 로드
+      if (!summaryLoaded) {
+        const sumIframe = document.createElement("iframe");
+        sumIframe.src = `logs/${summaryFile}`;
+        sumIframe.title = `${escapeHtml(session.title)} 요약`;
+        sumIframe.loading = "lazy";
+        // 로드 실패 감지: about:blank이거나 콘텐츠가 비어 있으면 패널 숨김
+        sumIframe.addEventListener("load", () => {
+          try {
+            const doc = sumIframe.contentDocument;
+            if (!doc || doc.URL === "about:blank" || (doc.body && doc.body.children.length === 0 && !doc.body.textContent.trim())) {
+              summaryPanel.style.display = "none";
+            }
+          } catch (e) {
+            // cross-origin이면 접근 불가 — 일단 표시 유지
+          }
+        });
+        sumIframe.addEventListener("error", () => {
+          summaryPanel.style.display = "none";
+        });
+        summaryContent.innerHTML = "";
+        summaryContent.appendChild(sumIframe);
+        summaryLoaded = true;
+      }
+      summaryContent.classList.add("open");
+      summaryToggle.setAttribute("aria-expanded", "true");
+      summaryToggleLabel.textContent = "세션 요약 닫기";
+      summaryToggleIcon.textContent = "▴";
+    } else {
+      // 닫기
+      summaryContent.classList.remove("open");
+      summaryToggle.setAttribute("aria-expanded", "false");
+      summaryToggleLabel.textContent = "세션 요약";
+      summaryToggleIcon.textContent = "▾";
+    }
+  });
+
   // ===== 위로가기 / 아래로가기 버튼 (iframe 내부 스크롤) =====
   const scrollTopBtn = document.getElementById("scrollTop");
   const scrollBottomBtn = document.getElementById("scrollBottom");

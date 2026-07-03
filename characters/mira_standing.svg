@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="hsl(120,55%,55%)"/>
+      <stop offset="100%" stop-color="hsl(120,55%,35%)"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#bg)"/>
+  <text x="200" y="300" font-family="Pretendard, Malgun Gothic, sans-serif" font-size="200" font-weight="700" fill="rgba(255,255,255,0.85)" text-anchor="middle" dominant-baseline="middle">미</text>
+  <text x="200" y="540" font-family="Pretendard, Malgun Gothic, sans-serif" font-size="24" font-weight="600" fill="rgba(255,255,255,0.8)" text-anchor="middle">미라</text>
+</svg>

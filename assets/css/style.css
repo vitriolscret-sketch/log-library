@@ -433,7 +433,32 @@ html {
   font-weight: 700;
   flex-shrink: 0;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--avatar-color, var(--accent)) 30%, transparent);
+  overflow: hidden;
+  position: relative;
 }
+
+/* portrait 이미지가 있을 때 아바타를 이미지로 채움 */
+.char-avatar-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+/* portrait 로드 실패 시 이니셜 폴백이 보이도록 img를 숨김 */
+.char-avatar-initial {
+  position: relative;
+  z-index: 0;
+}
+
+/*
+ * 이미지 로드 실패(onerror) 시 .char-avatar-fallback이 붙으면
+ * img는 숨겨지고, 배경색+이니셜이(없으므로 빈 원형) 표시된다.
+ * 단, 이니셜 폴백을 원하면 JS에서 fallback 텍스트를 주입해야 함.
+ */
 
 .char-card-info {
   flex: 1;
@@ -494,25 +519,65 @@ html {
 .char-detail-header {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 1.5rem;
   border-bottom: 1px solid var(--border);
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
 }
 
+/* standing 이미지 영역 (반신/전신) */
+.char-detail-standing {
+  flex-shrink: 0;
+  width: 260px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  align-self: stretch;
+  /* standing은 헤더 우측에 배치 */
+  order: 99;
+  margin-left: auto;
+}
+
+.char-detail-standing img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.char-detail-header-info {
+  flex: 1;
+  min-width: 0;
+}
+
 .char-detail-avatar {
-  width: 64px;
-  height: 64px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   background: var(--avatar-color, var(--accent));
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
   flex-shrink: 0;
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--avatar-color, var(--accent)) 25%, transparent);
+  overflow: hidden;
+  position: relative;
+}
+
+/* 상세 페이지 portrait 이미지 (이니셜 위에 덮어 씌움, 실패 시 폴백) */
+.char-detail-avatar-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 
 .char-detail-name {
@@ -547,9 +612,10 @@ html {
 .related-sessions {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.7rem;
 }
 
+/* 기존 단순 텍스트 링크형 (폴백용 - 세션을 못 찾았을 때) */
 .related-session {
   display: inline-block;
   padding: 0.6rem 1rem;
@@ -565,6 +631,77 @@ html {
 a.related-session:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+/* 개선된 관련 세션 카드 */
+.related-session-card {
+  display: block;
+  padding: 0.9rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--tag-color, var(--accent));
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.2s;
+}
+
+a.related-session-card:hover {
+  border-color: var(--tag-color, var(--accent));
+  border-left-color: var(--tag-color, var(--accent));
+  background: var(--bg-card-hover);
+  transform: translateX(3px);
+}
+
+.related-session-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.related-session-num {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.03em;
+}
+
+.related-session-tag {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tag-color) 18%, transparent);
+  color: var(--tag-color);
+  border: 1px solid color-mix(in srgb, var(--tag-color) 35%, transparent);
+  white-space: nowrap;
+}
+
+.related-session-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.related-session-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.related-session-date {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.related-session-summary {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ===== 로그 뷰어 페이지 ===== */
@@ -1205,6 +1342,67 @@ a.log-nav-btn:hover {
   margin-top: 0;
 }
 
+/* ===== 세션 요약 패널 (로그 본문 아래 토글) ===== */
+.log-summary-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.summary-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  background: var(--bg-card);
+  border: none;
+  border-left: 3px solid var(--book-color, var(--accent));
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.summary-toggle:hover {
+  background: var(--bg-card-hover);
+}
+
+.summary-toggle-icon {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  transition: transform 0.25s ease;
+}
+
+.summary-toggle[aria-expanded="true"] .summary-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.summary-content {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.3s ease;
+}
+
+.summary-content.open {
+  max-height: 70vh;
+  opacity: 1;
+}
+
+.summary-content iframe {
+  width: 100%;
+  height: 60vh;
+  border: none;
+  background: #fff;
+  display: block;
+}
+
 /* ===== 위로가기/아래로가기 FAB (iframe 내부 스크롤용) ===== */
 .scroll-fab {
   position: fixed;
@@ -1268,4 +1466,7 @@ a.log-nav-btn:hover {
   .chapter-item { flex-direction: column; align-items: flex-start; }
   .chapter-right { flex-direction: row; align-items: center; }
   .chapter-go { opacity: 1; transform: none; }
+  /* 상세 페이지 헤더: standing 이미지를 상단에 표시 */
+  .char-detail-header { flex-direction: column; align-items: center; text-align: center; }
+  .char-detail-standing { width: 200px; order: -1; margin-left: 0; align-self: center; }
 }

@@ -16,10 +16,14 @@
       // 이름 기반 해시 색상
       const hue = [...c.name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % 360;
       const avatarColor = `hsl(${hue}, 55%, 45%)`;
+      // portrait이 있으면 이미지를 이니셜 위에 덮어 씌움 (로드 실패 시 이니셜 폴백)
+      const avatarHtml = c.portrait
+        ? `<span class="char-avatar-initial">${escapeHtml(initial)}</span><img class="char-avatar-img" src="${escapeHtml(c.portrait)}" alt="${escapeHtml(c.name)}" loading="lazy" onerror="this.style.display='none'">`
+        : escapeHtml(initial);
       return `
       <a class="character-card" href="character.html?id=${encodeURIComponent(c.id)}" style="animation-delay:${i * 0.05}s">
         <div class="char-card-head">
-          <div class="char-avatar" style="--avatar-color:${avatarColor}">${escapeHtml(initial)}</div>
+          <div class="char-avatar" style="--avatar-color:${avatarColor}">${avatarHtml}</div>
           <div class="char-card-info">
             <div class="char-name">${escapeHtml(c.name)}</div>
             <div class="char-role">${escapeHtml(c.role)}</div>
