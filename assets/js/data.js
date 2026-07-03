@@ -25,11 +25,6 @@ const CAMPAIGNS = {
     color: "#e0af68",
     desc: "단발성으로 진행된 짧은 시나리오 모음."
   },
-  "test": {
-    name: "테스트 캠페인",
-    color: "#949494",
-    desc: "테스트 용도."
-  },
   "frost": {
     name: "서리의 추적자",
     color: "#7dcfff",
@@ -85,14 +80,6 @@ const SESSIONS = [
     date: "2026-02-05",
     summary: "항구 마을에서 벌어진 단발성 미스터리 시나리오.",
     campaign: "oneshot"
-  },
-  {
-    file: "testlog.html",
-    num: 1,
-    title: "테스트",
-    date: "2026-05-15",
-    summary: "이것은 테스트입니다.",
-    campaign: "test"
   },
   {
     file: "frost01.html",

@@ -30,8 +30,10 @@ log library/
 ├── logs/                   # 세션 로그 HTML 파일들
 │   ├── session01.html
 │   ├── session02.html
+│   ├── session03.html
 │   ├── side01.html
-│   └── oneshot01.html
+│   ├── oneshot01.html
+│   └── frost01.html
 ├── assets/
 │   ├── css/style.css       # 공통 스타일
 │   └── js/

@@ -1,13 +1,9 @@
 /**
  * 로그 열람 페이지: 캠페인 정보 상단 바 + 사이드바(같은 캠페인의 세션 목록) + 로그 본문(iframe)
  * URL: log.html?c=<campaignId>&s=<sessionNum>
- * data.js가 먼저 로드되어야 함. (theme.js는 이 페이지에서 사용하지 않음 - 자체 토글 사용)
+ * data.js, theme.js가 먼저 로드되어야 함.
  */
 (function () {
-  // ===== 초기 테마 적용 (theme.js 대신) =====
-  const savedTheme = localStorage.getItem("trpg-theme") || "dark";
-  document.documentElement.setAttribute("data-theme", savedTheme);
-
   const sidebar = document.getElementById("logSidebar");
   const headerBar = document.getElementById("logHeader");
   const frameWrap = document.getElementById("logFrameWrap");
@@ -83,19 +79,14 @@
     </div>
   `;
 
-  // 동적으로 추가된 토글 버튼에 테마 바인딩
+  // 동적으로 추가된 토글 버튼은 theme.js가 처리하므로 여기서는 바인딩하지 않음.
+  // 단, 동적 생성 후 theme.js의 DOMContentLoaded가 이미 실행됐을 수 있으므로
+  // 아이콘 상태를 수동으로 동기화.
   const toggle = document.getElementById("themeToggle");
   if (toggle) {
-    const root = document.documentElement;
     const icon = toggle.querySelector(".theme-icon");
-    icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
-    toggle.addEventListener("click", () => {
-      const current = root.getAttribute("data-theme") || "dark";
-      const next = current === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      icon.textContent = next === "dark" ? "🌙" : "☀️";
-      localStorage.setItem("trpg-theme", next);
-    });
+    const current = document.documentElement.getAttribute("data-theme") || "dark";
+    if (icon) icon.textContent = current === "dark" ? "🌙" : "☀️";
   }
 
   // ===== 사이드바 =====
