@@ -531,6 +531,169 @@ html {
   color: var(--text);
 }
 
+/* ===== 등장 장소 목록 페이지 ===== */
+.loc-section-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.loc-section-heading:first-child {
+  margin-top: 0;
+}
+
+.loc-section-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+}
+
+.location-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+  padding-bottom: 3rem;
+}
+
+.location-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.25s ease;
+  box-shadow: var(--shadow);
+  display: block;
+  animation: cardIn 0.4s ease backwards;
+}
+
+.location-card:hover {
+  border-color: var(--accent-dim);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.location-card-image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background: var(--bg);
+  position: relative;
+}
+
+.location-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.location-card:hover .location-card-image img {
+  transform: scale(1.05);
+}
+
+.location-card-body {
+  padding: 1rem 1.2rem 1.3rem;
+}
+
+.location-card-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.location-type {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  white-space: nowrap;
+}
+
+.location-card-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.location-card-desc {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===== 등장 장소 상세 페이지 ===== */
+.location-detail {
+  padding: 1.5rem 0 3rem;
+}
+
+.location-detail-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* 상단 큰 배경 이미지 */
+.loc-detail-hero {
+  width: 100%;
+  max-height: 420px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.loc-detail-hero img {
+  width: 100%;
+  height: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+.loc-detail-header {
+  padding: 1.5rem 2rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.loc-detail-name {
+  font-size: 1.8rem;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+
+.loc-detail-type {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* 상세 페이지 내부 섹션은 캐릭터 상세와 공유 (.char-detail-section 재사용) */
+.location-detail-card .char-detail-section {
+  padding: 0 2rem;
+}
+
 /* ===== 캐릭터 상세 페이지 ===== */
 .character-detail {
   padding: 1.5rem 0 3rem;
@@ -844,6 +1007,7 @@ a.related-session-card:hover {
   .hero h2 { font-size: 1.4rem; }
   .session-grid { grid-template-columns: 1fr; }
   .character-grid { grid-template-columns: 1fr; }
+  .location-grid { grid-template-columns: 1fr; }
   .stats-bar { grid-template-columns: repeat(2, 1fr); }
 }
 

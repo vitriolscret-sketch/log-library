@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2418"/>
+      <stop offset="60%" stop-color="#5c3a24"/>
+      <stop offset="100%" stop-color="#2a1810"/>
+    </linearGradient>
+    <radialGradient id="warm" cx="0.5" cy="0.6" r="0.4">
+      <stop offset="0%" stop-color="rgba(255,180,80,0.3)"/>
+      <stop offset="100%" stop-color="rgba(255,180,80,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#warm)"/>
+  <!-- 지붕 -->
+  <polygon points="250,180 400,110 550,180 550,200 250,200" fill="#8b3a2a"/>
+  <!-- 건물 본체 -->
+  <rect x="270" y="200" width="260" height="180" fill="#6b4830"/>
+  <!-- 문 -->
+  <rect x="370" y="280" width="60" height="100" fill="#3a2418"/>
+  <circle cx="415" cy="330" r="3" fill="#d4a060"/>
+  <!-- 창문 -->
+  <rect x="295" y="230" width="40" height="40" fill="#d4a060" opacity="0.7"/>
+  <rect x="465" y="230" width="40" height="40" fill="#d4a060" opacity="0.7"/>
+  <!-- 굴뚝 -->
+  <rect x="490" y="140" width="25" height="50" fill="#5c3a24"/>
+  <text x="400" y="470" font-family="Pretendard, Malgun Gothic, sans-serif" font-size="22" font-weight="600" fill="rgba(255,200,140,0.9)" text-anchor="middle">여관 '붉은 달'</text>
+</svg>

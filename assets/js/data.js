@@ -164,3 +164,51 @@ function findSession(campaignId, num) {
 function findCharacter(id) {
   return CHARACTERS.find(c => c.id === id);
 }
+
+// ===== 등장 장소 데이터 =====
+// - id: 고유 식별자 (영문 소문자, URL에 사용)
+// - name: 장소 이름
+// - type: 분류 (도시 / 자연 / 던전 / 건물 등)
+// - image: 배경 이미지 경로 (선택, locations/ 폴더 기준)
+// - summary: 목록 카드용 짧은 설명
+// - description: 상세 페이지용 긴 설명 (선택)
+// - relatedSessions: 관련 세션 배열 (선택, [campaignId, num] 튜플)
+const LOCATIONS = [
+  {
+    id: "red-moon-inn",
+    name: "여관 '붉은 달'",
+    type: "건물",
+    image: "locations/red-moon-inn.svg",
+    summary: "동쪽 숲 입구 마을의 유일한 여관. 모험자들의 거점.",
+    description: "동쪽 숲 입구 마을의 중심에 자리한 여관 '붉은 달'은 마을에서 가장 오래된 건물 중 하나다. 붉은 기와 지붕과 따뜻한 벽난로가 특징이며, 여관 주인 일라이자가 홀로 운영하고 있다. 모험자 길드의 의뢰가 자주 걸리는 곳이기도 해서, 여행자와 모험자들이 자주 들른다.",
+    relatedSessions: [["main", 1], ["side", 1]]
+  },
+  {
+    id: "east-forest",
+    name: "동쪽 숲",
+    type: "자연",
+    image: "locations/east-forest.svg",
+    summary: "실종자가 속출하는 정체불명의 숲. 고대 룬 문자가 새겨진 나무들.",
+    description: "마을 동쪽으로 펼쳐진 울창한 숲. 최근 들어 기묘한 일이 연달아 발생하고 있어 주민들이 두려워한다. 안개가 짙게 깔리는 날이 많고, 나무껍질에 고대 룬 문자가 새겨져 있는 등 마법적 흔적이 곳곳에서 발견된다. 숲 깊은 곳에는 고대 폐허가 숨겨져 있다.",
+    relatedSessions: [["main", 2], ["main", 3]]
+  }
+  // 새 장소는 여기에 추가
+];
+
+// 장소 id로 장소 찾기
+function findLocation(id) {
+  return LOCATIONS.find(l => l.id === id);
+}
+
+// type별로 장소 목록 반환 (이름 가나다순)
+function getLocationsByType() {
+  const groups = {};
+  LOCATIONS.forEach(l => {
+    const t = l.type || "기타";
+    if (!groups[t]) groups[t] = [];
+    groups[t].push(l);
+  });
+  // 각 그룹 내 가나다순 정렬
+  Object.values(groups).forEach(arr => arr.sort((a, b) => a.name.localeCompare(b.name, "ko")));
+  return groups;
+}

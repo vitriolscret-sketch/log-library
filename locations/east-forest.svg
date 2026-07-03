@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2a1a"/>
+      <stop offset="100%" stop-color="#0a160a"/>
+    </linearGradient>
+    <radialGradient id="mist" cx="0.5" cy="0.5" r="0.6">
+      <stop offset="0%" stop-color="rgba(180,200,180,0.15)"/>
+      <stop offset="100%" stop-color="rgba(180,200,180,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#mist)"/>
+  <!-- 나무들 -->
+  <g fill="#2a3a28">
+    <ellipse cx="120" cy="200" rx="45" ry="120"/>
+    <ellipse cx="200" cy="180" rx="55" ry="140"/>
+    <ellipse cx="680" cy="190" rx="50" ry="130"/>
+    <ellipse cx="600" cy="170" ry="150" rx="60"/>
+    <ellipse cx="400" cy="160" rx="48" ry="150"/>
+  </g>
+  <g fill="#1a2818" opacity="0.7">
+    <ellipse cx="280" cy="210" rx="40" ry="110"/>
+    <ellipse cx="520" cy="200" rx="45" ry="120"/>
+    <ellipse cx="340" cy="190" rx="38" ry="120"/>
+  </g>
+  <!-- 안개 -->
+  <ellipse cx="400" cy="420" rx="500" ry="50" fill="rgba(200,210,200,0.2)"/>
+  <ellipse cx="300" cy="440" rx="400" ry="30" fill="rgba(200,210,200,0.15)"/>
+  <!-- 룬 문자 나무 -->
+  <rect x="390" y="280" width="20" height="120" fill="#3a2a1a"/>
+  <text x="400" y="330" font-family="serif" font-size="18" fill="rgba(100,200,180,0.5)" text-anchor="middle">ᚱ</text>
+  <text x="400" y="360" font-family="serif" font-size="18" fill="rgba(100,200,180,0.5)" text-anchor="middle">ᚷ</text>
+  <text x="400" y="380" font-family="serif" font-size="16" fill="rgba(100,200,180,0.4)" text-anchor="middle">ᚨ</text>
+  <text x="400" y="480" font-family="Pretendard, Malgun Gothic, sans-serif" font-size="22" font-weight="600" fill="rgba(180,220,180,0.85)" text-anchor="middle">동쪽 숲</text>
+</svg>

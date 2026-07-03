@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>등장인물 · TRPG 로그 아카이브</title>
+  <title>등장 장소 · TRPG 로그 아카이브</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
       <h1 class="site-title"><a href="index.html">🎲 TRPG 로그 아카이브</a></h1>
       <nav class="site-nav">
         <a href="index.html">캠페인 서가</a>
-        <a href="characters.html" class="active">등장인물</a>
-        <a href="locations.html">등장 장소</a>
+        <a href="characters.html">등장인물</a>
+        <a href="locations.html" class="active">등장 장소</a>
         <button id="themeToggle" class="theme-toggle" aria-label="테마 전환" title="다크/라이트 전환">
           <span class="theme-icon">🌙</span>
         </button>
@@ -23,13 +23,13 @@
 
   <main class="container">
     <section class="hero">
-      <h2>등장인물</h2>
-      <p class="hero-sub">세션에 등장하는 인물들의 배경 이야기와 현재 상황을 소개합니다.</p>
+      <h2>등장 장소</h2>
+      <p class="hero-sub">세션에 등장하는 장소들의 배경 이미지와 설명을 소개합니다.</p>
     </section>
 
-    <section id="characterList">
-      <!-- 캐릭터 카드는 JS로 동적 생성됩니다 -->
-      <p class="loading">등장인물 정보를 불러오는 중...</p>
+    <section id="locationList">
+      <!-- 장소 카드는 JS로 동적 생성됩니다 -->
+      <p class="loading">장소 정보를 불러오는 중...</p>
     </section>
   </main>
 
@@ -43,6 +43,6 @@
 
   <script src="assets/js/theme.js"></script>
   <script src="assets/js/data.js"></script>
-  <script src="assets/js/characters.js"></script>
+  <script src="assets/js/locations.js"></script>
 </body>
 </html>
