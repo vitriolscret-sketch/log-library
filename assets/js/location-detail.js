@@ -25,6 +25,19 @@
   // 문서 제목 업데이트
   document.title = `${loc.name} · TRPG 로그 아카이브`;
 
+  // ===== 캠페인 바 (?c=<campaignId> 있을 때 표시) =====
+  const campId = params.get("c");
+  const campaignBar = document.getElementById("detailCampaignBar");
+  if (campId && CAMPAIGNS[campId]) {
+    const cmp = CAMPAIGNS[campId];
+    campaignBar.innerHTML = `
+      <div class="detail-campaign-bar" style="--book-color:${cmp.color}">
+        <a href="campaign.html?id=${encodeURIComponent(campId)}#locations" class="detail-campaign-back">← ${escapeHtml(cmp.name)} 목차로</a>
+        <span class="detail-campaign-label">장소 상세</span>
+      </div>
+    `;
+  }
+
   // 배경 이미지 (상단 큰 이미지)
   const imageHtml = loc.image
     ? `<div class="loc-detail-hero"><img src="${escapeHtml(loc.image)}" alt="${escapeHtml(loc.name)}" onerror="this.parentElement.style.display='none'"></div>`

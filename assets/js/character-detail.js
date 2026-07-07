@@ -25,6 +25,19 @@
   // 문서 제목 업데이트
   document.title = `${c.name} · TRPG 로그 아카이브`;
 
+  // ===== 캠페인 바 (?c=<campaignId> 있을 때 표시) =====
+  const campId = params.get("c");
+  const campaignBar = document.getElementById("detailCampaignBar");
+  if (campId && CAMPAIGNS[campId]) {
+    const cmp = CAMPAIGNS[campId];
+    campaignBar.innerHTML = `
+      <div class="detail-campaign-bar" style="--book-color:${cmp.color}">
+        <a href="campaign.html?id=${encodeURIComponent(campId)}#characters" class="detail-campaign-back">← ${escapeHtml(cmp.name)} 목차로</a>
+        <span class="detail-campaign-label">인물 상세</span>
+      </div>
+    `;
+  }
+
   // 아바타: portrait이 있으면 이미지, 없으면 이니셜
   const initial = c.name.charAt(0);
   const hue = [...c.name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % 360;

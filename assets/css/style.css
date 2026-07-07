@@ -917,6 +917,40 @@ a.related-session-card:hover {
 
 .back-link:hover { color: var(--accent); }
 
+/* ===== 상세 페이지 캠페인 바 (목차로 돌아가기) ===== */
+.detail-campaign-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  background: color-mix(in srgb, var(--book-color, var(--accent)) 10%, var(--bg-card));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--book-color, var(--accent));
+  border-radius: var(--radius);
+}
+
+.detail-campaign-back {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.detail-campaign-back:hover {
+  color: var(--book-color, var(--accent));
+}
+
+.detail-campaign-label {
+  font-size: 0.75rem;
+  color: var(--book-color, var(--accent));
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 /* ===== 푸터 ===== */
 .site-footer {
   border-top: 1px solid var(--border);
@@ -1146,6 +1180,107 @@ a.related-session-card:hover {
   gap: 1.2rem;
   color: var(--text-dim);
   font-size: 0.85rem;
+}
+
+/* ===== 캠페인 북 탭 (목차 / 인물 / 장소) ===== */
+.campaign-tabs {
+  display: flex;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.campaign-tab {
+  padding: 0.6rem 1.1rem;
+  text-decoration: none;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.campaign-tab:hover {
+  color: var(--text);
+}
+
+.campaign-tab.active {
+  color: var(--book-color, var(--accent));
+  border-bottom-color: var(--book-color, var(--accent));
+}
+
+.campaign-tab-count {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.05rem 0.45rem;
+  color: var(--text-dim);
+}
+
+.campaign-tab.active .campaign-tab-count {
+  background: color-mix(in srgb, var(--book-color, var(--accent)) 15%, transparent);
+  border-color: color-mix(in srgb, var(--book-color, var(--accent)) 30%, transparent);
+  color: var(--book-color, var(--accent));
+}
+
+.campaign-tab-content {
+  min-height: 200px;
+}
+
+/* ===== 설정 탭 엔트리 ===== */
+.setting-entry {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--book-color, var(--accent));
+  border-radius: var(--radius);
+  padding: 1.5rem 1.6rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+  animation: cardIn 0.4s ease backwards;
+}
+
+.setting-entry-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--book-color, var(--accent));
+  margin-bottom: 0.4rem;
+}
+
+.setting-entry-category {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--book-color, var(--accent)) 15%, transparent);
+  color: var(--book-color, var(--accent));
+  border: 1px solid color-mix(in srgb, var(--book-color, var(--accent)) 30%, transparent);
+  margin-bottom: 1rem;
+}
+
+.setting-entry-body {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.setting-entry-body p {
+  margin: 0.6rem 0;
+}
+
+.setting-entry-body ul {
+  margin: 0.6rem 0;
+  padding-left: 1.5rem;
+}
+
+.setting-entry-body li {
+  margin: 0.3rem 0;
 }
 
 .chapter-list-heading {

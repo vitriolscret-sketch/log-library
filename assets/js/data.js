@@ -103,6 +103,7 @@ const SESSIONS = [
 // - background: 배경 이야기
 // - current: 현재 상황 / 최근 동향
 // - description: 상세 페이지용 긴 설명 (선택)
+// - campaigns: 소속 캠페인 id 배열 (선택, 미지정 시 relatedSessions에서 추론)
 // - relatedSessions: 관련 세션 번호 배열 (선택, [campaignId, num] 튜플 또는 번호만)
 const CHARACTERS = [
   {
@@ -111,6 +112,7 @@ const CHARACTERS = [
     role: "PC · 전사",
     portrait: "characters/arin.svg",
     standing: "characters/arin_standing.svg",
+    campaigns: ["main"],
     background: "소도시 출신의 검사. 가족을 잃은 후 모험자 길드에 가입했다.",
     current: "현재 숲의 비밀을 조사 중. 동료들과 신뢰를 쌓고 있다.",
     description: "아린은 북부 소도시 출신의 젊은 검사로, 어린 시절 도적 습격으로 가족을 잃었다. 이후 모험자 길드에 가입하여 검술을 갈고닦았다. 감정을 잘 드러내지 않지만, 동료에 대한 의리는 매우 강한 편이다. 현재 미라와 함께 동쪽 숲의 실종 사건을 조사하고 있으며, 점차 리더 역할을 맡고 있다.",
@@ -122,6 +124,7 @@ const CHARACTERS = [
     role: "PC · 마법사",
     portrait: "characters/mira.svg",
     standing: "characters/mira_standing.svg",
+    campaigns: ["main"],
     background: "왕립 아카데미 출신. 고대 마법 유적을 연구하는 학자이다.",
     current: "숲에서 발견된 룬 문자를 해독하고 있다.",
     description: "미라는 왕립 마법 아카데미를 최우수로 졸업한 천재 마법사. 고대 문명의 마법 유적을 연구하는 것이 주 관심사이며, 학자적 호기심이 매우 강하다. 아카데미 시절부터 현장 답사를 중시해 왔고, 실전 경험도 꽤 쌓았다. 동쪽 숲에서 발견된 룬 문자가 자신의 연구 주제와 연관이 있다고 판단하여 아린과 함께 의뢰에 참여했다.",
@@ -133,6 +136,7 @@ const CHARACTERS = [
     role: "NPC · 여관 주인",
     portrait: "characters/eliza_portrait.png",
     standing: "characters/eliza_standing.png",
+    campaigns: ["main"],
     background: "동쪽 숲 입구 마을 '붉은 달' 여관의 주인. 남편을 잃은 뒤 홀로 여관을 운영하고 있다.",
     current: " 실종자 조사 의뢰를 아린과 미라에게 맡기며, 마을의 소식통 역할을 하고 있다.",
     description: "일라이자는 동쪽 숲 인근의 작은 마을에서 '붉은 달' 여관을 운영하는 중년의 여성이다. 젊은 시절 남편을 실종자 사건으로 잃은 뒤 홀로 여관을 이끌어 왔다. 외상 잘 드러내지 않지만 손님을 챙기는 정은 깊고, 마을의 소식이 모이는 여관 특성상 지역 소식통 노릇을 한다. 최근 숲에서 실종자가 속출하자 옛 상처가 되살아나, 모험자 길드에 의뢰를 넣고 아린과 미라를 맞이한다.",
@@ -172,6 +176,7 @@ function findCharacter(id) {
 // - image: 배경 이미지 경로 (선택, locations/ 폴더 기준)
 // - summary: 목록 카드용 짧은 설명
 // - description: 상세 페이지용 긴 설명 (선택)
+// - campaigns: 소속 캠페인 id 배열 (선택, 미지정 시 relatedSessions에서 추론)
 // - relatedSessions: 관련 세션 배열 (선택, [campaignId, num] 튜플)
 const LOCATIONS = [
   {
@@ -179,6 +184,7 @@ const LOCATIONS = [
     name: "여관 '붉은 달'",
     type: "건물",
     image: "locations/red-moon-inn.svg",
+    campaigns: ["main", "side"],
     summary: "동쪽 숲 입구 마을의 유일한 여관. 모험자들의 거점.",
     description: "동쪽 숲 입구 마을의 중심에 자리한 여관 '붉은 달'은 마을에서 가장 오래된 건물 중 하나다. 붉은 기와 지붕과 따뜻한 벽난로가 특징이며, 여관 주인 일라이자가 홀로 운영하고 있다. 모험자 길드의 의뢰가 자주 걸리는 곳이기도 해서, 여행자와 모험자들이 자주 들른다.",
     relatedSessions: [["main", 1], ["side", 1]]
@@ -188,6 +194,7 @@ const LOCATIONS = [
     name: "동쪽 숲",
     type: "자연",
     image: "locations/east-forest.svg",
+    campaigns: ["main"],
     summary: "실종자가 속출하는 정체불명의 숲. 고대 룬 문자가 새겨진 나무들.",
     description: "마을 동쪽으로 펼쳐진 울창한 숲. 최근 들어 기묘한 일이 연달아 발생하고 있어 주민들이 두려워한다. 안개가 짙게 깔리는 날이 많고, 나무껍질에 고대 룬 문자가 새겨져 있는 등 마법적 흔적이 곳곳에서 발견된다. 숲 깊은 곳에는 고대 폐허가 숨겨져 있다.",
     relatedSessions: [["main", 2], ["main", 3]]
@@ -211,4 +218,66 @@ function getLocationsByType() {
   // 각 그룹 내 가나다순 정렬
   Object.values(groups).forEach(arr => arr.sort((a, b) => a.name.localeCompare(b.name, "ko")));
   return groups;
+}
+
+// ===== 캠페인 소속 추론 헬퍼 =====
+// 인물/장소의 소속 캠페인 id 배열을 반환.
+// campaigns 필드가 있으면 그대로 사용, 없으면 relatedSessions에서 추론.
+function getCampaignsOf(item) {
+  if (item.campaigns && item.campaigns.length) return item.campaigns;
+  if (item.relatedSessions) {
+    const ids = new Set();
+    item.relatedSessions.forEach(r => {
+      if (Array.isArray(r)) ids.add(r[0]);
+    });
+    return [...ids];
+  }
+  return [];
+}
+
+// 특정 캠페인에 속한 캐릭터 목록 반환 (이름 가나다순)
+function getCharactersByCampaign(campaignId) {
+  return CHARACTERS
+    .filter(c => getCampaignsOf(c).includes(campaignId))
+    .sort((a, b) => a.name.localeCompare(b.name, "ko"));
+}
+
+// 특정 캠페인에 속한 장소 목록 반환 (이름 가나다순)
+function getLocationsByCampaign(campaignId) {
+  return LOCATIONS
+    .filter(l => getCampaignsOf(l).includes(campaignId))
+    .sort((a, b) => a.name.localeCompare(b.name, "ko"));
+}
+
+// ===== 설정 데이터 =====
+// 캠페인의 세계관·규칙·용어 등 부속 정보를 담는 자유 형식 엔트리.
+// 한 캠페인에 여러 엔트리가 있을 수 있으며, 가나다순으로 정렬됩니다.
+// - id: 고유 식별자 (영문 소문자)
+// - title: 설정 항목 제목
+// - category: 분류 (세계관 / 규칙 / 용어 / 기타 등)
+// - campaigns: 소속 캠페인 id 배열
+// - body: 본문 (HTML 허용, data.js에서 escapeHtml 하지 않음 - 작성자가 신뢰하는 콘텐츠)
+const SETTINGS = [
+  {
+    id: "guild-quest-system",
+    title: "모험자 길드 의뢰 시스템",
+    category: "세계관",
+    campaigns: ["main"],
+    body: "<p>모험자 길드는 실종자 조사·치안 유지·탐험 등의 의뢰를 중개한다. 의뢰는 금화로 보수가 책정되며, 성공 시 길드 수수료 10%를 제외한 금액이 지급된다.</p>"
+  },
+  {
+    id: "rune-magic",
+    title: "룬 마법 체계",
+    category: "세계관",
+    campaigns: ["main"],
+    body: "<p>고대 문명이 남긴 룬 문자는 마법의 매개체로, 해독할 수 있는 자가 발동시킬 수 있다. 아카데미에서는 이를 '계승 룬'과 '봉인 룬'으로 분류한다.</p><ul><li>계승 룬: 반복 사용 가능한 주술</li><li>봉인 룬: 일회성, 대상을 가두거나 깨우는 용도</li></ul>"
+  }
+  // 새 설정은 여기에 추가
+];
+
+// 특정 캠페인에 속한 설정 목록 반환 (제목 가나다순)
+function getSettingsByCampaign(campaignId) {
+  return SETTINGS
+    .filter(s => getCampaignsOf(s).includes(campaignId))
+    .sort((a, b) => a.title.localeCompare(b.title, "ko"));
 }
