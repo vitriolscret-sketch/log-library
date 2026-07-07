@@ -115,6 +115,32 @@ log library/
    }
    ```
 
+## 인물 / 장소 이미지 업로드 후 사용법
+
+인물 및 장소 이미지는 각각 `characters/`, `locations/` 폴더에 넣고 `data.js`에서 경로를 참조합니다.
+
+### 등장인물 이미지
+- `characters/` 폴더에 이미지 파일 업로드 (예: `arin.png`)
+- `data.js`의 `CHARACTERS`에서 두 가지 이미지 필드 사용:
+  - `portrait`: 목록 카드 및 상세 페이지 아바타용 작은 이미지 (정사각형 권장)
+  - `standing`: 상세 페이지 상단 우측에 크게 표시되는 반신/전신 이미지 (세로형 권장)
+- 이미지가 없으면 이름 첫 글자 이니셜 원형으로 자동 폴백
+  ```js
+  {
+    id: "arin",
+    portrait: "characters/arin.png",      // 아바타 (선택)
+    standing: "characters/arin_full.png",  // 반신/전신 (선택)
+  }
+  ```
+
+### 등장 장소 이미지
+- `locations/` 폴더에 배경 이미지 업로드 (예: `inn.png`)
+- `data.js`의 `LOCATIONS`에서 `image` 필드 사용 (가로형 배경 권장)
+  ```js
+  { image: "locations/inn.png" }
+  ```
+- 이미지가 없으면 배경색 카드로 표시
+
 ## URL 형식
 
 - 서가: `index.html`
