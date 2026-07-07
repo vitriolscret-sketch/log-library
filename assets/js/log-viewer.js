@@ -63,7 +63,7 @@
 
   headerBar.innerHTML = `
     <div class="log-bar-top" style="--book-color:${campaign.color}">
-      <a href="campaign.html?id=${encodeURIComponent(cId)}" class="log-back">← 목차로</a>
+      <a href="index.html" class="log-back">← 서가로</a>
       <span class="log-crumb">${escapeHtml(campaign.name)} · Session ${session.num}</span>
       <button id="themeToggle" class="theme-toggle log-theme-toggle" aria-label="테마 전환" title="다크/라이트 전환">
         <span class="theme-icon">🌙</span>
@@ -92,7 +92,6 @@
   // ===== 사이드바 =====
   sidebar.innerHTML = `
     <div class="sidebar-head" style="--book-color:${campaign.color}">
-      <a href="campaign.html?id=${encodeURIComponent(cId)}" class="sidebar-back">← 목차로</a>
       <div class="sidebar-book-title">${escapeHtml(campaign.name)}</div>
     </div>
     <nav class="sidebar-nav">
@@ -110,7 +109,7 @@
       }).join("")}
     </nav>
     <div class="sidebar-foot">
-      <a href="index.html" class="sidebar-foot-link">서가로</a>
+      <a href="campaign.html?id=${encodeURIComponent(cId)}" class="sidebar-foot-link">목차로</a>
     </div>
   `;
 
