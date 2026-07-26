@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TRPG 로그 아카이브</title>
+  <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/cinematic.css">
 </head>
 <body>
@@ -92,5 +93,47 @@
   <script src="assets/js/theme.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/cinematic.js"></script>
+  <script>
+    // 책 펼치기 전환 — 시네마틱 홈의 .poster 와 히어로 CTA 에 적용
+    (function () {
+      const overlay = document.getElementById("openBookOverlay");
+      const openBook = overlay ? overlay.querySelector(".open-book") : null;
+      if (!overlay || !openBook) return;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // 캠페인으로 이동하는 모든 링크: .poster 와 히어로 CTA (.btn-primary[href^="campaign.html"])
+      const links = document.querySelectorAll(
+        '.poster[href^="campaign.html"], .btn-primary[href^="campaign.html"]'
+      );
+
+      function triggerAndGo(href, color) {
+        if (reduceMotion) { window.location.href = href; return; }
+        openBook.style.setProperty("--open-color", color || "#444");
+        overlay.classList.add("is-active");
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          openBook.classList.add("is-open");
+        }));
+        window.setTimeout(() => { window.location.href = href; }, 1200);
+      }
+
+      // cinematic.js 가 동적으로 .poster / .btn-primary 를 렌더하므로
+      // capture phase click 을 document 에서 위임
+      document.addEventListener("click", (e) => {
+        const a = e.target.closest(
+          '.poster[href^="campaign.html"], .btn-primary[href^="campaign.html"]'
+        );
+        if (!a) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        // 색상: .poster 의 --pc / 히어로 CTA 는 hero 의 --hc
+        let color = getComputedStyle(a).getPropertyValue("--pc").trim();
+        if (!color) {
+          const hero = document.getElementById("hero");
+          if (hero) color = getComputedStyle(hero).getPropertyValue("--hc").trim();
+        }
+        triggerAndGo(a.getAttribute("href"), color);
+      }, true);
+    })();
+  </script>
 </body>
 </html>
