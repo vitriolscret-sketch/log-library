@@ -4,46 +4,83 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TRPG 로그 아카이브</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/cinematic.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <h1 class="site-title"><a href="index.html">🎲 TRPG 로그 아카이브</a></h1>
-      <nav class="site-nav">
-        <a href="index.html" class="active">캠페인 서가</a>
-        <a href="characters.html">등장인물</a>
-        <a href="locations.html">등장 장소</a>
-        <button id="themeToggle" class="theme-toggle" aria-label="테마 전환" title="다크/라이트 전환">
-          <span class="theme-icon">🌙</span>
-        </button>
-      </nav>
+  <nav class="cine-nav" id="cineNav">
+    <a class="brand" href="index.html"><span class="dice">🎲</span>로그 아카이브</a>
+    <div class="cine-nav-right">
+      <a class="nav-link" href="#shelf">서가</a>
+      <a class="nav-link" href="characters.html">인물</a>
+      <a class="nav-link" href="locations.html">장소</a>
+      <button id="themeToggle" class="theme-toggle" aria-label="테마 전환" title="다크/라이트 전환">
+        <span class="theme-icon">🌙</span>
+      </button>
     </div>
+  </nav>
+
+  <!-- 히어로 -->
+  <header class="hero" id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <span class="hero-monogram" id="heroMonogram"></span>
+    <span class="grain"></span>
+    <span class="hero-frame tl"></span>
+    <span class="hero-frame br"></span>
+    <div class="hero-inner">
+      <span class="hero-eyebrow" id="heroEyebrow">대표 캠페인 · Featured</span>
+      <h1 id="heroTitle">캠페인 서가</h1>
+      <p class="hero-desc" id="heroDesc">불러오는 중…</p>
+      <div class="hero-meta" id="heroMeta"></div>
+      <div class="hero-cta" id="heroCta"></div>
+    </div>
+    <button class="hero-arrow prev" id="heroPrev" aria-label="이전 캠페인">←</button>
+    <button class="hero-arrow next" id="heroNext" aria-label="다음 캠페인">→</button>
+    <div class="scroll-hint"><span class="line"></span>스크롤</div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <h2>캠페인 서가</h2>
-      <p class="hero-sub">펼쳐보고 싶은 캠페인 책을 선택하세요. 각 책 속에 세션 로그가 차례로 담겨 있습니다.</p>
-
-      <div class="stats-bar" id="statsBar"></div>
-    </section>
-
-    <section id="bookshelf" class="bookshelf">
-      <p class="loading">캠페인 목록을 불러오는 중...</p>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>© TRPG 로그 아카이브 · GitHub Pages로 호스팅됨</p>
+  <!-- 캠페인 포스터 -->
+  <section class="section" id="shelf">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">The Shelf</span>
+        <h2>캠페인 서가</h2>
+      </div>
+      <span class="hint">← 옆으로 넘기기 →</span>
     </div>
+    <div class="poster-track" id="posterTrack"><p class="loading">캠페인을 불러오는 중…</p></div>
+  </section>
+
+  <!-- 최근 기록 -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Latest</span>
+        <h2>최근 기록</h2>
+      </div>
+      <span class="hint">최신순</span>
+    </div>
+    <div class="latest-track" id="latestTrack"></div>
+  </section>
+
+  <!-- 인물 / 장소 -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Codex</span>
+        <h2>도감</h2>
+      </div>
+    </div>
+    <div class="quick-grid" id="quickGrid"></div>
+  </section>
+
+  <footer class="cine-footer">
+    <p>© TRPG 로그 아카이브 · GitHub Pages로 호스팅됨</p>
   </footer>
 
   <button id="scrollTop" class="scroll-top" aria-label="맨 위로" title="맨 위로">↑</button>
 
   <script src="assets/js/theme.js"></script>
   <script src="assets/js/data.js"></script>
-  <script src="assets/js/bookshelf.js"></script>
+  <script src="assets/js/cinematic.js"></script>
 </body>
 </html>
