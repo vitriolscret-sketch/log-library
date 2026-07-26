@@ -303,6 +303,126 @@ body::before {
 }
 
 /* ============================================
+   책 펼치기 전환 오버레이 (메인 → 캠페인)
+   — 2단 모션:
+   1) 0~0.5초: 우측 절반 표지가 책 중앙 hinge 기준 rotateY -90 으로 닫힘(backface hidden → 사라짐)
+   2) 0.5~1.0초: 좌측 양피지가 폭 0 → 50% 로 우측으로 밀려나며 펼침 (표지와 같은 easing/속도)
+   우측 양피지는 처음부터 표지 아래 가시. 중안 경첨음은 2단 끝에 사라짐.
+   ============================================ */
+.open-book-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  display: none; align-items: center; justify-content: center;
+  perspective: 2400px;
+  background: var(--bg-deep);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.open-book-overlay.is-active { display: flex; opacity: 1; }
+
+.open-book {
+  position: relative;
+  width: min(560px, 86vw);
+  height: min(380px, 58vw);
+  transform-style: preserve-3d;
+}
+
+/* 우측 양피지 – 처음부터 표지 아래 깔려 있음. 크기 고정. */
+.open-book-spread-right {
+  position: absolute; top: 0; left: 50%; width: 50%; height: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 1px 4px 4px 1px;
+  box-shadow: var(--shadow-deep);
+  overflow: hidden;
+  background: linear-gradient(270deg, var(--paper) 0%, var(--paper-edge) 100%);
+}
+.open-book-spread-right::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0, transparent 28px,
+    color-mix(in srgb, var(--text-faded) 12%, transparent) 28px,
+    color-mix(in srgb, var(--text-faded) 12%, transparent) 29px
+  );
+  border-left: 1px solid var(--rule-soft);
+}
+
+/* 좌측 양피지 – 닫힘 = 폭 0. 오른쪽 가장자리를 책 중앙(50%)에 고정하고
+   0.5초 delay 후 폭 0 → 50% 로 좌측으로 밀려나며 펼침.
+   easing = 표지 ease-in 곡선의 수학적 시간 역순(time-reversed). 표지의 끝순간 속도와
+   이 시작 순간 속도가 정확히 일치 → 중간에 멈춤 없는 자연스러운 속도 연속. */
+.open-book-spread-left {
+  position: absolute; top: 0; right: 50%; width: 0; height: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 4px 1px 1px 4px;
+  box-shadow: var(--shadow-deep);
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--paper-edge) 0%, var(--paper) 100%);
+  /* 표지 cubic-bezier(.55, 0, .85, .55) 의 time-reverse = cubic-bezier(.15, .45, .45, 1) */
+  transition: width 0.5s cubic-bezier(.15, .45, .45, 1);
+  transition-delay: 0.5s;
+}
+.open-book-spread-left::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0, transparent 28px,
+    color-mix(in srgb, var(--text-faded) 12%, transparent) 28px,
+    color-mix(in srgb, var(--text-faded) 12%, transparent) 29px
+  );
+}
+.open-book.is-open .open-book-spread-left { width: 50%; }
+
+/* 앞 표지 – 책 우측 절반 위치 단일 직사각형.
+   hinge = 자기 왼쪽 끝(=책 중앙 세로선). 0.5초 동안 rotateY 0 → -90 → backface hidden 으로 사라짐.
+   ease-in 곡선(cubic-bezier(.55, 0, .85, .55)) - 처음 느리고 0.5초 끝에서 최고 속도로 도달,
+   좌측 양피지 ease-out 시작과 속도 연속. */
+.open-book-cover {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 50%; height: 100%;
+  transform-origin: left center;
+  transform: rotateY(0deg);
+  background:
+    linear-gradient(115deg, color-mix(in srgb, var(--open-color, #444) 22%, var(--bg-card)) 0%,
+                            color-mix(in srgb, var(--open-color, #444) 14%, var(--bg-deep)) 100%);
+  border: 1px solid var(--rule);
+  border-left: 5px solid color-mix(in srgb, var(--open-color, #444) 60%, var(--bg-deep));
+  border-radius: 1px 4px 4px 1px;
+  box-shadow: var(--shadow-deep);
+  backface-visibility: hidden;
+  transition: transform 0.5s cubic-bezier(.55, 0, .85, .55);
+  z-index: 3;
+}
+.open-book-cover::before {
+  content: ""; position: absolute; inset: 12px;
+  border: 1px solid color-mix(in srgb, var(--open-color, #444) 40%, transparent);
+  pointer-events: none;
+}
+.open-book-cover::after {
+  content: ""; position: absolute; left: 18px; right: 18px; top: 18px; height: 1px;
+  background: color-mix(in srgb, var(--gold) 35%, transparent);
+  box-shadow: 0 calc(100% - 36px) 0 color-mix(in srgb, var(--gold) 35%, transparent);
+}
+.open-book.is-open .open-book-cover { transform: rotateY(-90deg); }
+
+/* 중안 세로 경첨 음영 – 2단 모션 끝에 fade-out */
+.open-book-spine-shadow {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: 18px;
+  transform: translateX(-50%);
+  background: linear-gradient(to right,
+    rgba(0,0,0,0) 0%, rgba(0,0,0,0.18) 50%, rgba(0,0,0,0) 100%);
+  pointer-events: none; z-index: 2;
+  opacity: 0.6;
+  transition: opacity 0.3s ease 0.7s;
+}
+.open-book.is-open .open-book-spine-shadow { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .open-book-cover { transition: opacity 0.2s ease; transform: none !important; }
+  .open-book-spread-left { transition: width 0.2s ease; }
+  .open-book-spine-shadow { transition: opacity 0.2s ease; }
+}
+/* ============================================
    캠페인 북 페이지
    ============================================ */
 .campaign-view { padding-bottom: 3rem; }

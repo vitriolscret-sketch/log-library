@@ -58,8 +58,9 @@
       const latest = sessions.length
         ? sessions.reduce((a, b) => (a.date > b.date ? a : b)).date
         : "-";
+      const href = `campaign.html?id=${encodeURIComponent(id)}`;
       return `
-        <a class="book" href="campaign.html?id=${encodeURIComponent(id)}" style="--book-color:${c.color}; animation-delay:${i * 0.08}s">
+        <a class="book" href="${href}" data-campaign="${encodeURIComponent(id)}" style="--book-color:${c.color}; animation-delay:${i * 0.08}s">
           <div class="book-cover">
             <span class="book-spine"></span>
             <div class="book-label">
@@ -76,6 +77,32 @@
         </a>
       `;
     }).join("");
+
+    // ===== 책 펼치기 전환 =====
+    const overlay = document.getElementById("openBookOverlay");
+    const openBook = overlay ? overlay.querySelector(".open-book") : null;
+
+    bookshelf.querySelectorAll("a.book").forEach(anchor => {
+      anchor.addEventListener("click", (e) => {
+        const href = anchor.getAttribute("href");
+        // 보조 기기 / reduce-motion 사용자는 바로 이동
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!overlay || !openBook || reduceMotion || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+          return; // 기본 anchor 이동 허용
+        }
+        e.preventDefault();
+        // 캠페인 색 상속
+        const color = getComputedStyle(anchor).getPropertyValue("--book-color").trim() || "#444";
+        openBook.style.setProperty("--open-color", color);
+        overlay.classList.add("is-active");
+        // 다음 프레임에서 펼침 트리거 (transition 확실히 작동)
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          openBook.classList.add("is-open");
+        }));
+        // 애니메이션 종료 후 이동 (표지 0.5s + 좌측 펼침 0.5s 순차 + 여유 200ms)
+        window.setTimeout(() => { window.location.href = href; }, 1200);
+      });
+    });
   }
 
   renderStats();
