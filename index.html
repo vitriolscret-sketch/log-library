@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TRPG 로그 아카이브</title>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/cinematic.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260726">
+  <link rel="stylesheet" href="assets/css/cinematic.css?v=20260726">
 </head>
 <body>
   <nav class="cine-nav" id="cineNav">
@@ -90,9 +90,9 @@
 
   <button id="scrollTop" class="scroll-top" aria-label="맨 위로" title="맨 위로">↑</button>
 
-  <script src="assets/js/theme.js"></script>
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/cinematic.js"></script>
+  <script src="assets/js/theme.js?v=20260726"></script>
+  <script src="assets/js/data.js?v=20260726"></script>
+  <script src="assets/js/cinematic.js?v=20260726"></script>
   <script>
     // 책 펼치기 전환 — 시네마틱 홈의 .poster 와 히어로 CTA 에 적용
     (function () {
@@ -105,6 +105,12 @@
       const links = document.querySelectorAll(
         '.poster[href^="campaign.html"], .btn-primary[href^="campaign.html"]'
       );
+
+      // 뒤로가기(bfcache 복원) 시 펼쳐진 채 남은 오버레이 초기화
+      window.addEventListener("pageshow", () => {
+        overlay.classList.remove("is-active");
+        openBook.classList.remove("is-open");
+      });
 
       function triggerAndGo(href, color) {
         if (reduceMotion) { window.location.href = href; return; }
