@@ -46,7 +46,6 @@ log library/
 │   ├── css/style.css       # 공통 스타일
 │   └── js/
 │       ├── data.js         # ★ 공통 데이터 원천 (캠페인·세션·인물·장소)
-│       ├── bookshelf.js    # 서가 렌더링 (index)
 │       ├── campaign.js     # 캠페인 북 렌더링
 │       ├── log-viewer.js   # 로그 열람 렌더링
 │       ├── characters.js   # 인물 목록 렌더링

@@ -70,40 +70,7 @@
   `;
 
   // ===== 인물 탭 내용 (PC / NPC 하위 섹션) =====
-  // role에서 분류 추출: "PC · 전사" → "PC", "NPC · 여관 주인" → "NPC"
-  function classifyRole(c) {
-    const tag = (c.role || "").split("·")[0].trim().toUpperCase();
-    return tag === "PC" || tag === "NPC" ? tag : (tag || "기타");
-  }
-
-  function charCardHtml(c, i) {
-    const initial = c.name.charAt(0);
-    const hue = [...c.name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % 360;
-    const avatarColor = `hsl(${hue}, 55%, 45%)`;
-    const avatarHtml = c.portrait
-      ? `<span class="char-avatar-initial">${escapeHtml(initial)}</span><img class="char-avatar-img" src="${escapeHtml(c.portrait)}" alt="${escapeHtml(c.name)}" loading="lazy" onerror="this.style.display='none'">`
-      : escapeHtml(initial);
-    return `
-      <a class="character-card" href="character.html?id=${encodeURIComponent(c.id)}&c=${encodeURIComponent(id)}" style="animation-delay:${i * 0.05}s">
-        <div class="char-card-head">
-          <div class="char-avatar" style="--avatar-color:${avatarColor}">${avatarHtml}</div>
-          <div class="char-card-info">
-            <div class="char-name">${escapeHtml(c.name)}</div>
-            <div class="char-role">${escapeHtml(c.role)}</div>
-          </div>
-        </div>
-        <div class="char-section">
-          <h4>배경</h4>
-          <p>${escapeHtml(c.background)}</p>
-        </div>
-        <div class="char-section">
-          <h4>현재 상황</h4>
-          <p>${escapeHtml(c.current)}</p>
-        </div>
-        <div class="char-more">자세히 보기 →</div>
-      </a>
-    `;
-  }
+  // 분류/카드 HTML은 data.js의 공용 헬퍼(classifyRole / charCardHtml) 사용
 
   const charactersTab = (() => {
     if (!characters.length) {
@@ -116,7 +83,7 @@
     // 분류별 그룹화 + 가나다 정렬
     const groups = {};
     characters.forEach(c => {
-      const cls = classifyRole(c);
+      const cls = classifyRole(c.role);
       if (!groups[cls]) groups[cls] = [];
       groups[cls].push(c);
     });
@@ -130,7 +97,7 @@
                   : cls === "NPC" ? "논플레이어 캐릭터 (NPC)"
                   : cls;
       const cards = groups[cls].sort((a, b) => a.name.localeCompare(b.name, "ko"))
-        .map(c => charCardHtml(c, idx++)).join("");
+        .map(c => charCardHtml(c, { campaignId: id, delay: idx++ * 0.05 })).join("");
       return `
         <h3 class="char-section-heading">${escapeHtml(label)} <span class="char-section-count">${groups[cls].length}</span></h3>
         <div class="character-grid">${cards}</div>

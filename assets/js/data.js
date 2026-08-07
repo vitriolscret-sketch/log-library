@@ -283,3 +283,97 @@ function getSettingsByCampaign(campaignId) {
     .filter(s => getCampaignsOf(s).includes(campaignId))
     .sort((a, b) => a.title.localeCompare(b.title, "ko"));
 }
+
+// ===== 공용 UI 헬퍼 =====
+// 여러 페이지에서 공유하는 렌더링 헬퍼 모음 (DRY).
+
+// role 문자열에서 분류 추출: "PC · 전사" → "PC", "NPC · 여관 주인" → "NPC"
+function classifyRole(role) {
+  const tag = (role || "").split("·")[0].trim().toUpperCase();
+  if (tag === "PC") return "PC";
+  if (tag === "NPC") return "NPC";
+  return tag || "기타";
+}
+
+// 이름 기반 해시 색상 (아바타 배경)
+function avatarColorOf(name) {
+  const hue = [...name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % 360;
+  return `hsl(${hue}, 55%, 45%)`;
+}
+
+// 캐릭터 카드용 아바타 HTML — portrait 있으면 이미지(이니셜 폴백), 없으면 이니셜
+function avatarHtml(c) {
+  const initial = c.name.charAt(0);
+  if (!c.portrait) return escapeHtml(initial);
+  return `<span class="char-avatar-initial">${escapeHtml(initial)}</span><img class="char-avatar-img" src="${escapeHtml(c.portrait)}" alt="${escapeHtml(c.name)}" loading="lazy" onerror="this.style.display='none'">`;
+}
+
+// 캐릭터 카드 HTML (campaign.js / characters.js 공용)
+// opts.campaignId: 상세 링크에 &c= 파라미터 추가 (캠페인 북에서 올 때)
+// opts.delay: 스태거 애니메이션 지연 (초)
+function charCardHtml(c, opts = {}) {
+  const href = `character.html?id=${encodeURIComponent(c.id)}${opts.campaignId ? `&c=${encodeURIComponent(opts.campaignId)}` : ""}`;
+  return `
+    <a class="character-card" href="${href}" style="animation-delay:${opts.delay ?? 0}s">
+      <div class="char-card-head">
+        <div class="char-avatar" style="--avatar-color:${avatarColorOf(c.name)}">${avatarHtml(c)}</div>
+        <div class="char-card-info">
+          <div class="char-name">${escapeHtml(c.name)}</div>
+          <div class="char-role">${escapeHtml(c.role)}</div>
+        </div>
+      </div>
+      <div class="char-section">
+        <h4>배경</h4>
+        <p>${escapeHtml(c.background)}</p>
+      </div>
+      <div class="char-section">
+        <h4>현재 상황</h4>
+        <p>${escapeHtml(c.current)}</p>
+      </div>
+      <div class="char-more">자세히 보기 →</div>
+    </a>
+  `;
+}
+
+// 관련 세션 카드 HTML (character-detail.js / location-detail.js 공용)
+// items: [campaignId, num] 튜플 또는 번호만 지원
+function relatedSessionsHtml(items) {
+  if (!items || !items.length) return "";
+  return `
+    <div class="char-detail-section">
+      <h3>관련 세션</h3>
+      <div class="related-sessions">
+        ${items.map(item => {
+          let campaignId, num;
+          if (Array.isArray(item)) {
+            [campaignId, num] = item;
+          } else {
+            // 번호만 있는 경우, 해당 번호의 세션에서 캠페인 찾기
+            const s0 = SESSIONS.find(x => x.num === Number(item));
+            if (!s0) return `<span class="related-session">Session ${item}</span>`;
+            campaignId = s0.campaign;
+            num = item;
+          }
+          const s = findSession(campaignId, num);
+          const camp = CAMPAIGNS[campaignId];
+          if (s) {
+            const tagColor = camp ? camp.color : "var(--accent)";
+            const campName = camp ? escapeHtml(camp.name) : "";
+            return `<a class="related-session-card" href="log.html?c=${encodeURIComponent(campaignId)}&s=${num}" style="--tag-color:${tagColor}">
+              <div class="related-session-head">
+                <span class="related-session-num">Session ${num}</span>
+                ${campName ? `<span class="related-session-tag">${campName}</span>` : ""}
+              </div>
+              <div class="related-session-title">${escapeHtml(s.title)}</div>
+              <div class="related-session-meta">
+                <span class="related-session-date">📅 ${s.date}</span>
+              </div>
+              <div class="related-session-summary">${escapeHtml(s.summary || "")}</div>
+            </a>`;
+          }
+          return `<span class="related-session">Session ${num}</span>`;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}

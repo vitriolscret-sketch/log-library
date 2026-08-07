@@ -101,6 +101,19 @@
       if (!overlay || !openBook) return;
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+      // ===== 오버레이 상태 초기화 =====
+      // 뒤로가기(bfcache 복원) 시 애니메이션 중간 상태로 남아 화면을 덮는 버그 방지.
+      function resetOverlay() {
+        overlay.classList.remove("is-active");
+        openBook.classList.remove("is-open");
+      }
+      // 첫 로드/새로고침 시 잔여 상태 제거
+      resetOverlay();
+      // bfcache에서 복원될 때도 초기화 (pageshow는 bfcache 복원 시에도 발생)
+      window.addEventListener("pageshow", (e) => {
+        if (e.persisted) resetOverlay();
+      });
+
       // 캠페인으로 이동하는 모든 링크: .poster 와 히어로 CTA (.btn-primary[href^="campaign.html"])
       const links = document.querySelectorAll(
         '.poster[href^="campaign.html"], .btn-primary[href^="campaign.html"]'
