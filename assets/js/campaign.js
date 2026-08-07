@@ -202,13 +202,8 @@
     });
   }
 
-  tabLinks.forEach(link => {
-    link.addEventListener("click", (e) => {
-      // hash 변경으로 hashchange 이벤트가 발생하므로, 여기서는 중복 처리 방지.
-      // hashchange에서 activateTab이 호출됨.
-    });
-  });
-
+  // <a href="#chapters"> 링크가 hash를 변경하면 hashchange 이벤트가 발생하여
+  // 아래 리스너가 activateTab을 호출하는 구조이므로, 별도 click 바인딩 불필요.
   window.addEventListener("hashchange", () => {
     const hash = window.location.hash.replace("#", "");
     activateTab(tabs.some(t => t.id === hash) ? hash : "chapters");
